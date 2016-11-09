@@ -1,6 +1,6 @@
 {
-  "name": "leantony/bootstrap_modal",
-  "description": "Laravel Ajax modal",
+  "name": "leantony/laravel_modal",
+  "description": "Laravel Ajax modal, based on bootstrap",
   "require": {
     "illuminate/support": "~5.0"
   },
