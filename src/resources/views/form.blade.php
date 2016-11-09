@@ -9,8 +9,8 @@
     @if(isset($data))
         {!! BootForm::bind($data) !!}
     @endif
-    {!! BootForm::text('Name', 'name') !!}
-    {!! BootForm::textArea('Description', 'description') !!}
+    {!! BootForm::text('Title', 'title') !!}
+    {!! BootForm::textArea('Content', 'content') !!}
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
