@@ -30,7 +30,7 @@ The modal view provided looks like this. Bootform isnt really a necessity, so fe
 {!! BootForm::close() !!}
 ```
 sample, without bootform
-```
+```html
 <form class="form-horizontal" role ="form" action={{ $route }}>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -46,7 +46,7 @@ sample, without bootform
 </form>
 ```
 run the following, if you haven't already
-```
+```bash
 # publish the javascript assets
 php artisan vendor:publish --tag=public --force
 # publish the view
@@ -87,7 +87,7 @@ Assuming the modal form will be triggered on a create action, make the action lo
 ```
 
 Add a link to your page, that will trigger the modal. Give the link a class of 'show_modal_form'
-```
+```html
 <a href="{{ route('posts.create') }}" class="btn btn-default show_modal_form">Create</a>
 ```
 When you click on the button, the modal should be displayed.
