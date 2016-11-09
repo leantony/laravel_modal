@@ -42,18 +42,18 @@ The modal view provided looks like this. Bootform isnt really a necessity, so fe
 ```
 
 Add the javascript assets to your page. Like the layout for instance
-```
-// any other required assets should come before. Like jquery, pnotify
-<script src="{{ asset('vendor/public/leantony/modal/utils.js') }}></script>
-<script src="{{ asset('vendor/public/leantony/modal/notify.js') }}></script>
-<script src="{{ asset('vendor/public/leantony/modal/modal.js') }}></script>
-// initialize the modal js
+```html
+<!-- any other required assets should come before. Like jquery, pnotify -->
+<script src="{{ asset('vendor/public/leantony/modal/utils.js') }}"></script>
+<script src="{{ asset('vendor/public/leantony/modal/notify.js') }}"></script>
+<script src="{{ asset('vendor/public/leantony/modal/modal.js') }}"></script>
+<!-- initialize the modal js -->
 <script>
     leantony.modal({});
 </script>
 ```
 Add the modal container to your layout. Like just before the footer
-```
+```php
 @include('modal::modal_container')
 ```
 Make a copy of the modal form copied, to your controller's views, and edit as necessary. Like add form columns, etc
@@ -83,7 +83,7 @@ Add a link to your page, that will trigger the modal. Give the link a class of '
 ```
 When you click on the button, the modal should be displayed.
 
-Your store action should return json. Like this
+Your store action should return json. For example;
 ```php
     /**
      * Store a newly created resource in storage.
@@ -93,15 +93,21 @@ Your store action should return json. Like this
      */
     public function store(Request $request)
     {
-        $this->getRepository()->create($request->all());
+        // quick validation. You can a form request for this
+        $this->validate($request, ['title' => 'required', 'content' => 'required|between:5,1000']);
 
+        // save the data
+        $post = Post::create($request->all());
+
+        // return json response. You can use this in the javascript accordingly. By default, a notification message is displayed
         return new JsonResponse([
             'success' => true,
+            'data' => $post,
             'message' => 'record created',
         ], 200);
     }
 ```
-For validation, you can use a form request. Whichever suits you, so long as the errors get returned to the client
+For validation, you can use a form request. Whichever suits you, so long as the errors get returned to the client, as json
 > The errors will be displayed on the notification
 
-If all succeeds, you should see a pnotify notification
+If all succeeds, you should see a notification.
