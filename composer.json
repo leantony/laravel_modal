@@ -1,0 +1,19 @@
+{
+  "name": "leantony/bootstrap_modal",
+  "description": "Laravel Ajax modal",
+  "require": {
+    "illuminate/support": "~5.0"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "leantony",
+      "email": "chachaantony@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Leantony\\Modal\\": "src/"
+    }
+  }
+}
