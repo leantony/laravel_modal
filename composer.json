@@ -2,7 +2,7 @@
   "name": "leantony/laravel_modal",
   "description": "Laravel Ajax modal, based on bootstrap",
   "require": {
-    "illuminate/support": "~5.0"
+    "illuminate/support": "~5.1"
   },
   "license": "MIT",
   "authors": [

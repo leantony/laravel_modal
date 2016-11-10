@@ -16,8 +16,8 @@ class ServiceProvider extends LaravelServiceProvider
         $this->loadViewsFrom(__DIR__ . '/resources', 'modal');
 
         $this->publishes([
-            __DIR__ . '/resources/views' => resource_path('views/vendor/leantony/modal'),
-            __DIR__ . '/resources/js' => resource_path('views/vendor/leantony/modal'),
+            __DIR__ . '/resources/views' => base_path('resources/views/vendor/leantony/modal'),
+            __DIR__ . '/resources/js' => base_path('resources/views/vendor/leantony/modal'),
         ]);
 
         $this->publishes([
