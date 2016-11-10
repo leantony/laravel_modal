@@ -11,6 +11,11 @@
       "email": "chachaantony@gmail.com"
     }
   ],
+  "extra": {
+    "branch-alias": {
+      "dev-master": "master"
+    }
+  },
   "autoload": {
     "psr-4": {
       "Leantony\\Modal\\": "src/"
