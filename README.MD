@@ -1,24 +1,36 @@
 # Ajax based bootstrap modal. (Not yet finished, but will soon)
 
 ## Installation
-+ laravel. At least version 5+
-+ composer. (coming soon)
-+ jquery, pnotify. Make sure you have this assets
-+ Add the service provider, in config
+### Requirements
++ laravel. At least version 5.1+
++ composer
++ [jquery](http://code.jquery.com/jquery.js) for obvious reasons, and [pnotify](http://sciactive.com/pnotify/) for simple non-UI blocking notifications
+
+Use composer to install the package.
+```bash
+composer require leantony/laravel_modal:dev-master
+```
+
+Add the service provider, in app.php.
 ```php
 Leantony\Modal\ServiceProvider::class
 ```
-+ publishing of assets
+Publish the assets
 ```bash
 # publish the javascript assets
 php artisan vendor:publish --tag=public --force
 # publish the views
-artisan vendor:publish --provider="Leantony\Modal\ServiceProvider"
+php artisan vendor:publish --provider="Leantony\Modal\ServiceProvider"
 ```
-> The views will be copied to the resources/views/vendor/leantony folder, while the assets will be copied to resources/views/vendor/leantony/modal
+**Note** that the javascript files will be copied into the public/vendor/leantony/modal, and resources/assets/vendor/leantony/modal.
+> I did this, to allow for customizations to the javascript, while also retaining the latest copy from the package.
+
+The views will be copied to resources/views/vendor/leantony/modal
+
+You can then use elixir to publish the assets, or directly refrence the ones in the public/vendor/leantony/modal folder
 
 # Usage
-The modal view provided looks like this. Bootform isnt really a necessity, so feel free to change this. So long as the variables remain
+The modal view provided looks like this. Bootform isnt really a necessity, so feel free to change this. So long as the form_id and variables remain. The form ID is used in javascript, so be sure to update accordingly.
 ```php
 {!! BootForm::openHorizontal(['sm' => [4, 8], 'lg' => [2, 10]])->action($route)->class('form-horizontal')->id('modal_form')->method(isset($method) ? $method : 'POST') !!}
 
@@ -41,7 +53,7 @@ The modal view provided looks like this. Bootform isnt really a necessity, so fe
 {!! BootForm::close() !!}
 ```
 
-Add the javascript assets to your page. Like the layout for instance
+Add the javascript assets to your page. Like the layout for instance. You can use elixir for this
 ```html
 <!-- any other required assets should come before. Like jquery, pnotify -->
 <script src="{{ asset('vendor/public/leantony/modal/utils.js') }}"></script>
@@ -52,11 +64,11 @@ Add the javascript assets to your page. Like the layout for instance
     leantony.modal({});
 </script>
 ```
-Add the modal container to your layout. Like just before the footer
+Add the modal container to your layout. This is where the html for the modal form will be injected by the javascript ajax call. Put it ideally just before the footer
 ```php
-@include('modal::modal_container')
+@include('modal::container')
 ```
-Make a copy of the modal form copied, to your controller's views, and edit as necessary. Like add form columns, etc
+Make a copy of the modal form copied, to your controller's views, and edit as necessary. Like add form fields, etc.
 
 Assuming the modal form will be triggered on a create action, make the action look like this. In this case, I assume you copied the modal form and named it 'create.blade.php'
 ```php
@@ -110,4 +122,4 @@ Your store action should return json. For example;
 For validation, you can use a form request. Whichever suits you, so long as the errors get returned to the client, as json
 > The errors will be displayed on the notification
 
-If all succeeds, you should see a notification.
+Feel free to play around with this. :)
