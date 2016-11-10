@@ -1,4 +1,5 @@
-# Ajax based bootstrap modal. (Not yet finished, but will soon)
+# Ajax based bootstrap modal
+Purpose of this package, is to allow quick and easy creation and triggering of modal forms via ajax, from a laravel controller.
 
 ## Installation
 ### Requirements
