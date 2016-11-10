@@ -11,6 +11,9 @@
       "email": "chachaantony@gmail.com"
     }
   ],
+  "suggest": {
+    "adamwathan/bootforms": "To quickly create bootstrap forms in laravel (~0.8.2)."
+  },
   "autoload": {
     "psr-4": {
       "Leantony\\Modal\\": "src/"
