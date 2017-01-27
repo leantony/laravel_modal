@@ -1,5 +1,5 @@
-# Ajax based bootstrap modal
-Purpose of this package, is to allow quick and easy creation and triggering of modal forms via ajax, from a laravel controller.
+# Laravel modal
+Purpose of this package, is to allow quick and easy creation and triggering of modal forms via ajax.
 
 ## Installation
 ### Requirements
@@ -20,18 +20,21 @@ Leantony\Modal\ServiceProvider::class
 Publish the assets
 ```bash
 # publish the javascript assets
-php artisan vendor:publish --tag=public --force
-# publish the views
+php artisan vendor:publish --tag=public --provider="Leantony\Modal\ServiceProvider" --force
+# publish the view
 php artisan vendor:publish --provider="Leantony\Modal\ServiceProvider"
 ```
 > The javascript files will be copied into the "public/vendor/leantony/modal" folder
 
 The view will be copied to resources/views/vendor/leantony/modal
 
-You can then refrence the assets (bootstrap, jquery, pnotify, and etc) on your page
+You can then reference the assets (bootstrap, jquery) on your page
 
 # Usage
-The modal view provided looks like this. Bootform isnt really a necessity, so feel free to change this. So long as the form_id and variables remain. The form ID is used in javascript, so be sure to update accordingly.
+A sample modal form....The bootform package used here, isnt really a necessity, so feel free to change this. Only used it because it allows for quick form markup generation in laravel.
+
+> But be sure to leave the *form id* of *modal_form* as is, since its referenced in javascript.
+
 ```php
 {!! BootForm::openHorizontal(['sm' => [4, 8], 'lg' => [2, 10]])->action($route)->class('form-horizontal')->id('modal_form')->method(isset($method) ? $method : 'POST') !!}
 
@@ -40,12 +43,9 @@ The modal view provided looks like this. Bootform isnt really a necessity, so fe
     <h4 class="modal-title">{{ ucwords($action . ' '. class_basename($model)) }}</h4>
 </div>
 <div class="modal-body">
-    <div class="hidden" id="modal-notification"></div>
-    @if(isset($data))
-        {!! BootForm::bind($data) !!}
-    @endif
-    {!! BootForm::text('Title', 'title') !!}
-    {!! BootForm::textArea('Content', 'content') !!}
+    <div id="modal-notification"></div>
+    {!! BootForm::text('Title', 'title')->placeholder('Enter a title') !!}
+    {!! BootForm::textArea('Content', 'content')->placeholder('Enter some content') !!}
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -54,7 +54,7 @@ The modal view provided looks like this. Bootform isnt really a necessity, so fe
 {!! BootForm::close() !!}
 ```
 
-Add the javascript assets to your page. Like the layout for instance.
+A sample page...
 ```html
 <!doctype html>
 <html lang="en">
@@ -95,9 +95,9 @@ Add the javascript assets to your page. Like the layout for instance.
 ```php
 
 ```
-Make a copy of the modal form copied, to your views, and edit as necessary. This will obviously be different depending on your needs, as its the actual form that the user.
+You'll need to make a copy of the sample modal form provided, to your views, and edit as necessary. This will obviously be different depending on your needs.
 
-In this case, the modal will be triggered on create action. It is assumed that named your modal form 'create.blade.php'
+In this case, the modal will be triggered on create action. For this example, It is assumed that named your modal form 'create.blade.php'
 ```php
     /**
      * Display the view to create the resource
@@ -145,6 +145,4 @@ Your store action should return json. For example;
         ], 200);
     }
 ```
-For validation, you can use a form request. Dont worry about the validation errors, as this will be displayed automatically on the modal
-
-Feel free to play around with this. :)
+For validation, you can use a form request. Don't worry about the validation errors, as they will be displayed automatically on the modal form.
