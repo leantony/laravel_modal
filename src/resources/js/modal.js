@@ -4,11 +4,13 @@ leantony.modal = leantony.modal || {};
     'use strict';
     var modal = function (options) {
         var defaultOptions = {
+            // id of modal form template on page
             modal_id: 'bootstrap_modal',
+            // id of notification element where messages will be displayed on the modal. E.g validation errors
             notification_id: 'modal-notification',
+            // the id of the form that contains the data that will be sent to the server
             form_id: 'modal_form',
-            success_class: 'alert-success',
-            error_class: 'alert-danger',
+            // the class of the element that will trigger the modal. typically a link
             modalTriggerSelector: '.show_modal_form',
             onShown: function (e, modal) {
                 // do sth once the modal is shown
@@ -90,9 +92,10 @@ leantony.modal = leantony.modal || {};
                     if (response.success) {
                         var message = '<i class=\"fa fa-check\"></i> ';
                         message += response.message;
-                        leantony.notify({text: message || "Success.", type: "success"});
+                        $('#' + $this.options.notification_id).html(leantony.utils.renderAlert('success', message));
+                        // if a redirect is required...
                         if (response.redirectTo) {
-                            leantony.utils.loadLink(response.redirectTo, 1000);
+                            leantony.utils.loadLink(response.redirectTo, response.redirectTimeout || 1000);
                         } else {
                             // hide the modal after 1000 ms
                             setTimeout(function () {
@@ -101,7 +104,8 @@ leantony.modal = leantony.modal || {};
                         }
                     }
                     else {
-                        leantony.notify({text: response.message || "Success.", type: "success"});
+                        // display message and hide modal
+                        $('#' + $this.options.notification_id).html(leantony.utils.renderAlert('error', response.message));
                         setTimeout(function () {
                             $('#' + $this.options.modal_id).modal('hide');
                         }, 1000);
@@ -114,10 +118,19 @@ leantony.modal = leantony.modal || {};
                     $(e).html(originalButtonHtml).removeAttr('disabled');
                 },
                 error: function (data) {
-                    leantony.notify({
-                        text: leantony.utils.processMessageObject(data.responseJSON) || "An error occurred",
-                        type: "error"
-                    });
+                    var msg;
+                    // error handling
+                    switch (data.status) {
+                        case 500:
+                            msg = 'A server error occurred...';
+                            break;
+                        default:
+                            msg = leantony.utils.renderAlert('error', data.responseJSON);
+                            break;
+                    }
+                    // display errors
+                    $('#' + $this.options.notification_id).html(msg);
+
                 }
             });
         };

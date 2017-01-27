@@ -5,7 +5,8 @@ Purpose of this package, is to allow quick and easy creation and triggering of m
 ### Requirements
 + laravel. At least version 5.1+
 + composer
-+ [jquery](http://code.jquery.com/jquery.js) for obvious reasons, and [pnotify](http://sciactive.com/pnotify/) for simple non-UI blocking notifications
++ jquery
++ Bootstrap3
 
 Use composer to install the package.
 ```bash
@@ -23,12 +24,11 @@ php artisan vendor:publish --tag=public --force
 # publish the views
 php artisan vendor:publish --provider="Leantony\Modal\ServiceProvider"
 ```
-**Note** that the javascript files will be copied into the public/vendor/leantony/modal, and resources/assets/vendor/leantony/modal.
-> I did this, to allow for customizations to the javascript, while also retaining the latest copy from the package.
+> The javascript files will be copied into the "public/vendor/leantony/modal" folder
 
-The views will be copied to resources/views/vendor/leantony/modal
+The view will be copied to resources/views/vendor/leantony/modal
 
-You can then use elixir to publish the assets, or directly refrence the ones in the public/vendor/leantony/modal folder
+You can then refrence the assets (bootstrap, jquery, pnotify, and etc) on your page
 
 # Usage
 The modal view provided looks like this. Bootform isnt really a necessity, so feel free to change this. So long as the form_id and variables remain. The form ID is used in javascript, so be sure to update accordingly.
@@ -54,24 +54,50 @@ The modal view provided looks like this. Bootform isnt really a necessity, so fe
 {!! BootForm::close() !!}
 ```
 
-Add the javascript assets to your page. Like the layout for instance. You can use elixir for this
+Add the javascript assets to your page. Like the layout for instance.
 ```html
-<!-- any other required assets should come before. Like jquery, pnotify -->
-<script src="{{ asset('vendor/public/leantony/modal/utils.js') }}"></script>
-<script src="{{ asset('vendor/public/leantony/modal/notify.js') }}"></script>
-<script src="{{ asset('vendor/public/leantony/modal/modal.js') }}"></script>
-<!-- initialize the modal js -->
-<script>
-    leantony.modal({});
-</script>
-```
-Add the modal container to your layout. This is where the html for the modal form will be injected by the javascript ajax call. Put it ideally just before the footer
-```php
-@include('modal::container')
-```
-Make a copy of the modal form copied, to your controller's views, and edit as necessary. Like add form fields, etc.
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    </head>
+    <body>
 
-Assuming the modal form will be triggered on a create action, make the action look like this. In this case, I assume you copied the modal form and named it 'create.blade.php'
+     <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad animi architecto deleniti eius odio odit quas quisquam quod repellendus sapiente. Autem deserunt fugiat ipsum iusto molestias odio provident repudiandae voluptates!
+    </p>
+    <hr>
+    <!-- a link to a named route, that displays the modal form -->
+    <a href="{{ route('posts.create') }}" class="btn btn-default show_modal_form">New post</a>
+
+
+
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{{ asset('vendor/public/leantony/modal/modal.min.js') }}"></script>
+    <!-- initialize the modal js plugin -->
+    <script>
+        leantony.modal();
+    </script>
+
+    <!-- Add the modal container to your layout. This is where the html for the modal form will be injected by the javascript ajax call. Put it ideally just before the footer -->
+
+    @include('modal::container')
+    <footer>
+        some text here
+    </footer>
+    </body>
+</html>
+```
+
+```php
+
+```
+Make a copy of the modal form copied, to your views, and edit as necessary. This will obviously be different depending on your needs, as its the actual form that the user.
+
+In this case, the modal will be triggered on create action. It is assumed that named your modal form 'create.blade.php'
 ```php
     /**
      * Display the view to create the resource
@@ -88,12 +114,12 @@ Assuming the modal form will be triggered on a create action, make the action lo
         ])->render();
     }
 ```
-> check the arguments in the form sample, to know what else can be passed into the modal.
+> check the variables in the form sample, to know what else can be passed into the modal view. Fee free to add your own
 
 Add a link to your page, that will trigger the modal. Give the link a class of 'show_modal_form'
-```html
-<a href="{{ route('posts.create') }}" class="btn btn-default show_modal_form">Create</a>
-```
+
+> The class name is important as it instructs the javascript to send an ajax request to the link's href attribute for a view. Which will then be displayed on the page, as a modal.
+
 When you click on the button, the modal should be displayed.
 
 Your store action should return json. For example;
@@ -112,15 +138,13 @@ Your store action should return json. For example;
         // save the data
         $post = Post::create($request->all());
 
-        // return json response. You can use this in the javascript accordingly. By default, a notification message is displayed
+        // return json response. The message is, as it will be used to notify the user of their action
         return new JsonResponse([
             'success' => true,
-            'data' => $post,
             'message' => 'record created',
         ], 200);
     }
 ```
-For validation, you can use a form request. Whichever suits you, so long as the errors get returned to the client, as json
-> The errors will be displayed on the notification
+For validation, you can use a form request. Dont worry about the validation errors, as this will be displayed automatically on the modal
 
 Feel free to play around with this. :)
