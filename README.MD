@@ -6,7 +6,7 @@ Purpose of this package, is to allow quick and easy creation and triggering of m
 + laravel. At least version 5.1+
 + composer
 + jquery
-+ Bootstrap3
++ Bootstrap3.
 
 Use composer to install the package.
 ```bash
