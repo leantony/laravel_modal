@@ -40,7 +40,7 @@ leantony.modal = leantony.modal || {};
         var modal_id = $this.options.modal_id;
         var clickHandler = function (e) {
             var modal_size = $(e).data('modal-size');
-            if (!_.isEmpty(modal_size)) {
+            if (modal_size) {
                 $('#' + modal_id).find('.modal-dialog').addClass(modal_size);
             }
             var url = $(e).attr('href');

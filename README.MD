@@ -76,10 +76,10 @@ A sample page...
 
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="{{ asset('vendor/public/leantony/modal/modal.min.js') }}"></script>
+    <script src="{{ asset('vendor/leantony/modal/modal.min.js') }}"></script>
     <!-- initialize the modal js plugin -->
     <script>
-        leantony.modal();
+        leantony.modal({});
     </script>
 
     <!-- Add the modal container to your layout. This is where the html for the modal form will be injected by the javascript ajax call. Put it ideally just before the footer -->
